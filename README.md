@@ -18,5 +18,5 @@
   * Signal handling
   * System call overhead
   * Memory read latency 
-* Miscellanious
+* Miscellaneous
   * Processor clock rate calculation 
