@@ -15,9 +15,11 @@
 # shar		build a shippable shar archive
 
 SHELL=/bin/sh
+BINDIR=../out
+export BINDIR
 
 build: 
-	cd src && $(MAKE) BINDIR=../out OS=uClinux CC=arm-uclinuxeabi-gcc CFLAGS="-mcpu=cortex-m4 -mthumb -DCONFIG_NOMMU"
+	cd src && $(MAKE) OS=uClinux CC=arm-uclinuxeabi-gcc CFLAGS="-mcpu=cortex-m4 -mthumb -DCONFIG_NOMMU"
 
 results: FRC
 	cd src && $(MAKE) results
@@ -40,7 +42,7 @@ clobber clean:
 		echo ===== $$i =====; \
 		(cd $$i && $(MAKE) clean); \
 	done
-	/bin/rm -rf bin/*
+	/bin/rm -rf src/$(BINDIR)/*
 
 get: 
 	for i in doc src results scripts; do \

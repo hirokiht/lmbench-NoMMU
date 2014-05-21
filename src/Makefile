@@ -46,7 +46,7 @@ D= ../doc
 TRUE=/bin/true
 OS=`../scripts/os`
 TARGET=`../scripts/target`
-BINDIR=../bin/$(OS)
+BINDIR?=../bin/$(OS)
 CONFIG=$(BINDIR)/`../scripts/config`
 UTILS=../scripts/target ../scripts/os ../scripts/gnu-os ../scripts/compiler \
 	../scripts/info ../scripts/info-template ../scripts/version \

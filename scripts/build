@@ -4,8 +4,8 @@ CC=${CC-`../scripts/compiler`}
 MAKE=${MAKE-`../scripts/make`}
 OS=${OS-`../scripts/os`}
 TARGET=${TARGET-`../scripts/target`}
-BINDIR=../bin/"${OS}"
-CONFIG=../bin/"${OS}"/`../scripts/config`
+BINDIR=${BINDIR}
+CONFIG="${BINDIR}"/`../scripts/config`
 NULL=/dev/null
 
 BASE=/tmp/dummy
