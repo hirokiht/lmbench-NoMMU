@@ -17,7 +17,7 @@
 SHELL=/bin/sh
 
 build: 
-	cd src && $(MAKE) OS=uClinux CC=arm-uclinuxeabi-gcc CFLAGS="-mcpu=cortex-m4 -mthumb -DCONFIG_NOMMU"
+	cd src && $(MAKE) BINDIR=../out OS=uClinux CC=arm-uclinuxeabi-gcc CFLAGS="-mcpu=cortex-m4 -mthumb -DCONFIG_NOMMU"
 
 results: FRC
 	cd src && $(MAKE) results

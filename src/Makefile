@@ -189,7 +189,7 @@ dist:
 	&& rm -rf lmbench-$${VERSION};
 
 clean:
-	/bin/rm -f ../bin/*/CONFIG ../bin/*/*.[oas]
+	/bin/rm -f $(BINDIR)/../*/CONFIG $(BINDIR)/../*/*.[oas]
 	/bin/rm -f *.[oas]
 
 clobber:
