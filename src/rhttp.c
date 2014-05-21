@@ -75,7 +75,11 @@ usage:		fprintf(stderr,
 			printf("%s ", args[j]);
 		}
 		printf("\n");
+#ifdef CONFIG_NOMMU
+		if (vfork() == 0) {
+#else
 		if (fork() == 0) {
+#endif
 			char	name[30];
 
 			sprintf(name, "/tmp/rhttp%d", i);
@@ -84,7 +88,11 @@ usage:		fprintf(stderr,
 			dup(1);
 			execvp(args[0], args);
 			perror(args[0]);
+#ifdef CONFIG_NOMMU
+			_exit(1);
+#else
 			exit(1);
+#endif
 		}
 	}
 	for (i = 1; i < ac; ++i) {

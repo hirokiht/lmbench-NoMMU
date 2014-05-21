@@ -105,9 +105,13 @@ main(int ac, char **av)
 	while (( c = getopt(ac, av, "sS:m:p:P:W:N:")) != EOF) {
 		switch(c) {
 		case 's': /* Server */
+#ifdef CONFIG_NOMMU
+			server_main();
+#else
 			if (fork() == 0) {
 				server_main();
 			}
+#endif
 			exit(0);
 		case 'S': /* shutdown serverhost */
 		{

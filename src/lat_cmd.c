@@ -81,6 +81,18 @@ cleanup(iter_t iterations, void* cookie)
 		state->pid = 0;
 	}
 }
+
+#ifdef CONFIG_NOMMU
+static char	thd_stack[STACK_SIZE];
+
+int
+cmd_thread_function(void *t)
+{
+	state_t *state = (state_t *)t;
+	execvp(state->argv[0], state->argv);
+	return 0;
+}
+#endif
 	
 void 
 bench(register iter_t iterations, void *cookie)
@@ -89,6 +101,9 @@ bench(register iter_t iterations, void *cookie)
 
 	signal(SIGCHLD, SIG_DFL);
 	while (iterations-- > 0) {
+#ifdef CONFIG_NOMMU
+		state->pid = clone(cmd_thread_function, thd_stack + STACK_SIZE - 4, CLONE_VM|SIGCHLD, state);
+#else
 		switch (state->pid = fork()) {
 		case '0':
 			execvp(state->argv[0], state->argv);
@@ -96,6 +111,7 @@ bench(register iter_t iterations, void *cookie)
 		default:
 			break;
 		}
+#endif
 		waitpid(state->pid, NULL, 0);
 		state->pid = 0;
 	}

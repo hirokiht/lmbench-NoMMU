@@ -17,7 +17,7 @@
 SHELL=/bin/sh
 
 build: 
-	cd src && $(MAKE)
+	cd src && $(MAKE) OS=uClinux CC=arm-uclinuxeabi-gcc CFLAGS="-mcpu=cortex-m4 -mthumb -DCONFIG_NOMMU"
 
 results: FRC
 	cd src && $(MAKE) results
@@ -41,7 +41,6 @@ clobber clean:
 		(cd $$i && $(MAKE) clean); \
 	done
 	/bin/rm -rf bin/*
-	-bk clean 
 
 get: 
 	for i in doc src results scripts; do \

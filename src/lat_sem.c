@@ -15,6 +15,7 @@ char	*id = "$Id$\n";
 #include "bench.h"
 #include <sys/sem.h>
 
+#ifndef CONFIG_NOMMU
 void initialize(iter_t iterations, void *cookie);
 void cleanup(iter_t iterations, void *cookie);
 void doit(iter_t iterations, void *cookie);
@@ -24,17 +25,20 @@ typedef struct _state {
 	int	pid;
 	int	semid;
 } state_t;
+#endif
 
 int 
 main(int ac, char **av)
 {
+#ifdef CONFIG_NOMMU
+	printf("Not supported in NOMMU architecture.\n");
+#else
 	state_t state;
 	int parallel = 1;
 	int warmup = 0;
 	int repetitions = -1;
 	int c;
 	char* usage = "[-P <parallelism>] [-W <warmup>] [-N <repetitions>]\n";
-
 	while (( c = getopt(ac, av, "P:W:N:")) != EOF) {
 		switch(c) {
 		case 'P':
@@ -61,9 +65,11 @@ main(int ac, char **av)
 	benchmp(initialize, doit, cleanup, SHORT, parallel, 
 		warmup, repetitions, &state);
 	micro("Semaphore latency", get_n() * 2);
+#endif
 	return (0);
 }
 
+#ifndef CONFIG_NOMMU
 void 
 initialize(iter_t iterations, void* cookie)
 {
@@ -160,3 +166,4 @@ writer(register int sid)
 		}
 	}
 }
+#endif

@@ -89,9 +89,17 @@ main(int ac, char **av)
 	signal(SIGHUP, die);
 	signal(SIGTERM, die);
 	for (i = 1; i < fflg; ++i) {
+#ifdef CONFIG_NOMMU
+		if (vfork() <= 0) {
+			handle_scheduler(i, 0, 0);
+			worker();
+			_exit(0);
+		}
+#else
 		if (fork() <= 0) {
 			break;
 		}
+#endif
 	}
 	handle_scheduler(i, 0, 0);
 	worker();

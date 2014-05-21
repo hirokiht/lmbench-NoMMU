@@ -40,9 +40,16 @@ int main(int ac, char **av)
 	/* Start the server "-s" or Shut down the server "-S" */
 	if (ac == 2) {
 		if (!strcmp(av[1], "-s")) {
+#ifdef CONFIG_NOMMU
+			if (vfork() == 0) {
+				server_main();
+				_exit(0);
+			}
+#else
 			if (fork() == 0) {
 				server_main();
 			}
+#endif
 			exit(0);
 		}
 		if (!strcmp(av[1], "-S")) {

@@ -24,6 +24,10 @@ char	*id = "$Id$\n";
 #define STATIC_PREFIX ""
 #endif
 
+#ifdef CONFIG_NOMMU
+#define fork() vfork()
+#endif
+
 void do_shell(iter_t iterations, void* cookie);
 void do_forkexec(iter_t iterations,void* cookie);
 void do_fork(iter_t iterations, void* cookie);
@@ -112,7 +116,11 @@ do_shell(iter_t iterations, void* cookie)
 			handle_scheduler(benchmp_childid(), 1, 1);
 			close(1);
 			execlp("/bin/sh", "sh", "-c", PROG, 0);
+#ifdef CONFIG_NOMMU
+			_exit(1);
+#else
 			exit(1);
+#endif
 
 		default:
 			waitpid(child_pid, NULL,0);
@@ -140,7 +148,11 @@ do_forkexec(iter_t iterations, void* cookie)
 			handle_scheduler(benchmp_childid(), 1, 1);
 			close(1);
 			execve(PROG, nav, 0);
+#ifdef CONFIG_NOMMU
+			_exit(1);
+#else
 			exit(1);
+#endif
 
 		default:
 			waitpid(child_pid, NULL,0);
@@ -162,7 +174,11 @@ do_fork(iter_t iterations, void* cookie)
 	
 		case 0:	/* child */
 			handle_scheduler(benchmp_childid(), 1, 1);
+#ifdef CONFIG_NOMMU
+			_exit(1);
+#else
 			exit(1);
+#endif
 	
 		default:
 			waitpid(child_pid, NULL,0);
