@@ -47,7 +47,7 @@ TRUE=/bin/true
 OS=`../scripts/os`
 TARGET=`../scripts/target`
 BINDIR=../bin/$(OS)
-CONFIG=../bin/$(OS)/`../scripts/config`
+CONFIG=$(BINDIR)/`../scripts/config`
 UTILS=../scripts/target ../scripts/os ../scripts/gnu-os ../scripts/compiler \
 	../scripts/info ../scripts/info-template ../scripts/version \
 	../scripts/config ../scripts/config-run ../scripts/results \
